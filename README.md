@@ -18,3 +18,6 @@ Optional: set `ANTHROPIC_API_KEY` to use the in-site Claude buttons (`ANTHROPIC_
 ## Posters
 `PLAYWRIGHT_PATH=<path to playwright> node tools/poster.js '{"headline":"..","subline":"..","cta":"..","theme":"dark"}' assets/posters/name.png`
 Uses the official logo files in `assets/`.
+
+## Easiest start
+Install Node.js (https://nodejs.org, LTS). Then double-click `start.bat` (Windows) or `start.command` (Mac). The browser opens at http://localhost:3000.
