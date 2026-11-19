@@ -224,6 +224,15 @@
     a.href = URL.createObjectURL(new Blob([JSON.stringify(db, null, 2)], { type: "application/json" }));
     a.download = `vcreate-studio-${today()}.json`; a.click();
   };
+  window.VC_csv = () => {
+    const cols = ["title", "platform", "type", "status", "campaign", "date", "owner", "caption", "notes"];
+    const q = (v) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+    const rows = db.content.map((c) => [c.title, c.platform, c.type, c.status, campName(c.campaign), c.date, memberName(c.owner), c.caption, c.notes].map(q).join(","));
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["\ufeff" + cols.join(",") + "\n" + rows.join("\n")], { type: "text/csv" }));
+    a.download = `vcreate-content-${today()}.csv`; a.click();
+  };
+  $("#csvBtn").onclick = () => window.VC_csv();
   $("#importFile").onchange = async (e) => {
     try { const j = JSON.parse(await e.target.files[0].text()); if (!j.content || !j.campaigns || !j.team) throw 0; db = j; save(); route(); toast("Imported"); } catch { toast("Invalid backup file"); }
   };
