@@ -19,4 +19,10 @@ http.createServer((req, res) => {
   if (!f.startsWith(__dirname) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end("Not found"); }
   res.writeHead(200, { "content-type": types[path.extname(f)] || "application/octet-stream" });
   fs.createReadStream(f).pipe(res);
-}).listen(port, () => console.log(`vcreate Studio running at http://localhost:${port}`));
+}).listen(port, () => {
+  const url = `http://localhost:${port}`;
+  console.log(`vcreate Studio running at ${url}`);
+  if (process.env.NO_OPEN) return; // opens your browser automatically
+  const { exec } = require("child_process");
+  exec(process.platform === "win32" ? `start "" ${url}` : process.platform === "darwin" ? `open ${url}` : `xdg-open ${url}`, () => {});
+});
