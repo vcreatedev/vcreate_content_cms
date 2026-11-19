@@ -1,0 +1,179 @@
+{
+  "rev": 2,
+  "campaigns": [
+    {
+      "id": "c1",
+      "name": "Websites for Local Shops",
+      "goal": "Leads from Andhra Pradesh & Telangana small businesses",
+      "start": "2026-11-09",
+      "end": "2026-12-09",
+      "status": "Active"
+    },
+    {
+      "id": "c2",
+      "name": "Client Wins",
+      "goal": "Show finished sites and results",
+      "start": "2026-11-14",
+      "end": "2026-12-19",
+      "status": "Active"
+    },
+    {
+      "id": "c3",
+      "name": "Festival Offers",
+      "goal": "Seasonal offer on starter website packs",
+      "start": "2026-11-29",
+      "end": "2026-12-29",
+      "status": "Planned"
+    }
+  ],
+  "team": [
+    {
+      "id": "t1",
+      "name": "Venkat",
+      "role": "Owner"
+    },
+    {
+      "id": "t2",
+      "name": "Designer",
+      "role": "Designer"
+    },
+    {
+      "id": "t3",
+      "name": "Editor",
+      "role": "Video Editor"
+    },
+    {
+      "id": "t4",
+      "name": "Writer",
+      "role": "Copywriter"
+    }
+  ],
+  "content": [
+    {
+      "id": "p1",
+      "title": "Poster: Your shop deserves a website",
+      "type": "Poster",
+      "platform": "Instagram",
+      "status": "Review",
+      "campaign": "c1",
+      "date": "",
+      "owner": "t2",
+      "caption": "Simple, fast websites for small businesses in Andhra Pradesh and Telangana. DM to start.",
+      "notes": "Made with official logo file",
+      "image": "assets/posters/website-for-every-shop.png"
+    },
+    {
+      "id": "i1",
+      "title": "Why every kirana shop needs a website",
+      "type": "Reel",
+      "platform": "Instagram",
+      "status": "Scheduled",
+      "campaign": "c1",
+      "date": "2026-11-20",
+      "owner": "t1",
+      "caption": "Customers search on Google before they visit. Be there. 📍",
+      "notes": "30s reel, Telugu voiceover"
+    },
+    {
+      "id": "i2",
+      "title": "Before/after: salon website",
+      "type": "Carousel",
+      "platform": "Instagram",
+      "status": "Design",
+      "campaign": "c2",
+      "date": "2026-11-22",
+      "owner": "t2",
+      "caption": "",
+      "notes": "5 slides, show mobile view"
+    },
+    {
+      "id": "i3",
+      "title": "What a starter website costs",
+      "type": "Post",
+      "platform": "Facebook",
+      "status": "Review",
+      "campaign": "c1",
+      "date": "2026-11-21",
+      "owner": "t4",
+      "caption": "Simple pricing, no surprises. DM us to get started.",
+      "notes": ""
+    },
+    {
+      "id": "i4",
+      "title": "How we build a site in 7 days",
+      "type": "Video",
+      "platform": "YouTube",
+      "status": "Video Editing",
+      "campaign": "c2",
+      "date": "2026-11-25",
+      "owner": "t3",
+      "caption": "",
+      "notes": "Screen recording + voiceover"
+    },
+    {
+      "id": "i5",
+      "title": "Festival starter pack offer",
+      "type": "Poster",
+      "platform": "Instagram",
+      "status": "Planning",
+      "campaign": "c3",
+      "date": "2026-12-01",
+      "owner": "t2",
+      "caption": "",
+      "notes": "Use brand colours only"
+    },
+    {
+      "id": "i6",
+      "title": "Google Business Profile checklist",
+      "type": "Blog",
+      "platform": "Website",
+      "status": "Writing",
+      "campaign": "c1",
+      "date": "2026-11-27",
+      "owner": "t4",
+      "caption": "",
+      "notes": ""
+    },
+    {
+      "id": "i7",
+      "title": "Client story: restaurant online orders",
+      "type": "Post",
+      "platform": "LinkedIn",
+      "status": "Idea",
+      "campaign": "c2",
+      "date": "",
+      "owner": "t1",
+      "caption": "",
+      "notes": "Need client approval"
+    },
+    {
+      "id": "i8",
+      "title": "3 mistakes on small business websites",
+      "type": "Reel",
+      "platform": "Instagram",
+      "status": "Published",
+      "campaign": "c1",
+      "date": "2026-11-16",
+      "owner": "t1",
+      "caption": "Slow, not mobile-friendly, no contact button.",
+      "notes": "",
+      "stats": {
+        "views": 4200,
+        "likes": 310,
+        "shares": 42
+      }
+    },
+    {
+      "id": "i9",
+      "title": "Welcome message for new leads",
+      "type": "Story",
+      "platform": "WhatsApp",
+      "status": "Approved",
+      "campaign": "c1",
+      "date": "2026-11-23",
+      "owner": "t4",
+      "caption": "Thanks for reaching out to vcreate!",
+      "notes": ""
+    }
+  ]
+}

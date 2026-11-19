@@ -27,13 +27,13 @@
 
   // ---------- routing ----------
   const ROUTES = [
-    ["dashboard", "Dashboard"], ["content", "Content"], ["pipeline", "Pipeline"],
-    ["calendar", "Calendar"], ["campaigns", "Campaigns"], ["team", "Team"], ["analytics", "Analytics"],
+    ["studio", "Studio (Claude)"], ["dashboard", "Dashboard"], ["content", "Content"], ["pipeline", "Pipeline"],
+    ["calendar", "Calendar"], ["campaigns", "Campaigns"], ["team", "Team"], ["posters", "Posters"], ["analytics", "Analytics"],
   ];
   let query = "";
   function route() {
-    const name = (location.hash.replace("#/", "") || "dashboard").split("?")[0];
-    const r = ROUTES.find((x) => x[0] === name) ? name : "dashboard";
+    const name = (location.hash.replace("#/", "") || "studio").split("?")[0];
+    const r = ROUTES.find((x) => x[0] === name) ? name : "studio";
     $("#nav").innerHTML = ROUTES.map(([k, l]) => `<a href="#/${k}" class="${k === r ? "on" : ""}">${l}</a>`).join("");
     $("#sidebar").classList.remove("open");
     $("#view").innerHTML = views[r]();
@@ -44,6 +44,7 @@
 
   // ---------- views ----------
   const views = {
+    studio() { return window.VCAI.render(); },
     dashboard() {
       const c = db.content;
       const by = (s) => c.filter((x) => x.status === s).length;
@@ -114,6 +115,10 @@
       ${db.team.map((t) => `<tr><td>${esc(t.name)}</td><td>${esc(t.role)}</td><td>${db.content.filter((x) => x.owner === t.id && x.status !== "Published").length} open</td><td><button class="icon-btn" data-delmember="${t.id}" aria-label="Remove">🗑</button></td></tr>`).join("")}
       </tbody></table></section>`;
     },
+    posters() {
+      const list = db.content.filter((x) => x.image && match(x));
+      return `<h1>Posters</h1>${list.length ? `<div class="cards">${list.map((x) => `<div class="card"><a href="${esc(x.image)}" target="_blank" rel="noopener"><img class="pimg" src="${esc(x.image)}" alt="${esc(x.title)}" loading="lazy"></a><p><b>${esc(x.title)}</b></p><p class="muted">${esc(x.caption)}</p><a class="btn small" href="${esc(x.image)}" download>Download</a> ${badge(x.status)}</div>`).join("")}</div>` : `<p class="muted">No posters yet. Ask Claude in chat to create one.</p>`}`;
+    },
     analytics() {
       const pub = db.content.filter((x) => x.status === "Published");
       const sum = (k) => pub.reduce((a, x) => a + ((x.stats || {})[k] || 0), 0);
@@ -173,6 +178,7 @@
   // ---------- events ----------
   function bind(r) {
     const v = $("#view");
+    if (r === "studio") window.VCAI.bind();
     v.querySelectorAll("select[data-f]").forEach((s) => (s.onchange = () => {
       const f = JSON.parse(sessionStorage.getItem("filters") || "{}"); f[s.dataset.f] = s.value;
       sessionStorage.setItem("filters", JSON.stringify(f)); route();
@@ -208,6 +214,13 @@
   $("#importFile").onchange = async (e) => {
     try { const j = JSON.parse(await e.target.files[0].text()); if (!j.content || !j.campaigns || !j.team) throw 0; db = j; save(); route(); toast("Imported"); } catch { toast("Invalid backup file"); }
   };
+  window.VC = { db: () => db, save, toast, esc, uid };
   window.addEventListener("hashchange", route);
-  route();
+  window.addEventListener("load", async () => {
+    try {
+      const r = await fetch("data/content.json", { cache: "no-store" });
+      if (r.ok) { const j = await r.json(); if (j.content && (db.rev || 0) < (j.rev || 0)) { db = j; save(); } }
+    } catch {}
+    route();
+  });
 })();

@@ -55,3 +55,14 @@ select,input,textarea{font:inherit;padding:8px 10px;border:1px solid var(--line)
   .two,.grid2{grid-template-columns:1fr}.topbar{padding:10px 12px}.view{padding:16px}.newlabel{display:none}
   .day{min-height:64px;padding:3px}.chip{font-size:9px}
 }
+.ai-cards{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.ai-card{text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;font:inherit;color:inherit;padding:20px}
+.ai-card:hover,.ai-card.on{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft)}
+.ai-card b{font-size:16px}.ai-i{font-size:26px}
+.fl{display:flex;flex-direction:column;gap:5px;font-weight:500;font-size:12px;margin:12px 0}
+#aiPanel .btn,#aiOut .btn{margin-top:6px}.err{color:#b91c1c;font-weight:500}
+.idea{padding:10px 0;border-bottom:1px solid var(--line)}.idea p{margin:6px 0 0;color:#334155}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0}.cmp>div{background:#f8fafc;border-radius:8px;padding:12px}
+.poster{width:100%;max-width:420px;border-radius:10px;border:1px solid var(--line);display:block}
+@media(max-width:860px){.cmp{grid-template-columns:1fr}}
+.pimg{width:100%;border-radius:8px;border:1px solid var(--line);display:block;margin-bottom:10px}
