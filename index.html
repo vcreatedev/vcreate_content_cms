@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vcreate Studio — Content Operations</title>
+<meta name="description" content="Plan, create, review, schedule and publish content in one workspace.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">vcreate <span>Studio</span></div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      <button class="btn ghost small" id="exportBtn">Export data</button>
+      <label class="btn ghost small">Import<input type="file" id="importFile" accept="application/json" hidden></label>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+      <input id="search" class="search" type="search" placeholder="Search content, campaigns…">
+      <button class="btn primary" id="newBtn">+ New content</button>
+    </header>
+    <main id="view" class="view"></main>
+  </div>
+</div>
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
