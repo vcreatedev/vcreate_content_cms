@@ -1,5 +1,5 @@
 // Usage: node tools/poster.js '{"headline":"...","subline":"...","cta":"...","theme":"dark|light|indigo"}' assets/posters/name.png
-// Renders a 1080x1350 poster with the OFFICIAL logo file (never drawn). Needs playwright (global install ok).
+// V (assets/v/v-face.png) is drawn on every poster. Renders a 1080x1350 poster with the OFFICIAL logo file (never drawn). Needs playwright (global install ok).
 const path = require("path"), fs = require("fs"), http = require("http");
 const { chromium } = require(process.env.PLAYWRIGHT_PATH || "playwright");
 (async () => {

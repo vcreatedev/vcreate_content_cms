@@ -125,6 +125,8 @@
     ctx.fillStyle = t.accent; ctx.beginPath(); ctx.roundRect(M, H - 270, cw, 96, 48); ctx.fill();
     ctx.fillStyle = t.accent === "#ffffff" ? "#4f46e5" : "#fff"; ctx.fillText(p.cta, M + 40, H - 270 + 28);
     ctx.fillStyle = t.sub; ctx.font = "500 32px Inter, Arial, sans-serif"; ctx.fillText("@vcreatewebsites", M, H - 110);
+    // V, the vcreate character, appears on every poster
+    try { const v = await loadImg("assets/v/v-face.png"); const vw = 400, vh = vw * (v.naturalHeight / v.naturalWidth); ctx.drawImage(v, W - vw - 30, H - vh, vw, vh); } catch {}
   }
 
   // ---------- home view ----------
