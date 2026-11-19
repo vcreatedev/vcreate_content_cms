@@ -74,13 +74,13 @@
       return `<div class="head"><h1>Content</h1></div>
       <div class="filters"><select data-f="status">${opt(STAGES, f.status, "All statuses")}</select><select data-f="platform">${opt(PLATFORMS, f.platform, "All platforms")}</select></div>
       <section class="card table-wrap"><table><thead><tr><th>Title</th><th>Platform</th><th>Type</th><th>Status</th><th>Campaign</th><th>Date</th><th></th></tr></thead><tbody>
-      ${list.map((x) => `<tr><td><a href="#" data-edit="${x.id}">${esc(x.title)}</a></td><td>${x.platform}</td><td>${x.type}</td><td>${badge(x.status)}</td><td>${esc(campName(x.campaign))}</td><td>${fmt(x.date)}</td><td><button class="icon-btn" data-del="${x.id}" aria-label="Delete">🗑</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No content found.</td></tr>`}
+      ${list.map((x) => `<tr><td><a href="#" data-edit="${x.id}">${esc(x.title)}</a></td><td>${x.platform}</td><td>${x.type}</td><td>${badge(x.status)}</td><td>${esc(campName(x.campaign))}</td><td>${fmt(x.date)}</td><td><button class="icon-btn" data-prev="${x.id}" aria-label="Preview" title="Preview">👁</button><button class="icon-btn" data-del="${x.id}" aria-label="Delete">🗑</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No content found.</td></tr>`}
       </tbody></table></section>`;
     },
     pipeline() {
       return `<h1>Pipeline</h1><p class="muted">Drag a card to move it to another stage.</p>
       <div class="kanban">${STAGES.map((s) => `<div class="col" data-stage="${s}"><h3>${s} <em>${db.content.filter((x) => x.status === s && match(x)).length}</em></h3>
-      ${db.content.filter((x) => x.status === s && match(x)).map((x) => `<div class="kcard" draggable="true" data-id="${x.id}" data-edit="${x.id}"><b>${esc(x.title)}</b><small>${x.platform} · ${x.type}</small></div>`).join("")}</div>`).join("")}</div>`;
+      ${db.content.filter((x) => x.status === s && match(x)).map((x) => `<div class="kcard" draggable="true" data-id="${x.id}" data-edit="${x.id}"><b>${esc(x.title)}</b><small>${x.platform} · ${x.type}</small><button class="icon-btn" data-prev="${x.id}" aria-label="Preview">👁 Preview</button></div>`).join("")}</div>`).join("")}</div>`;
     },
     calendar() {
       const m = +(sessionStorage.getItem("cal") || 0);
@@ -117,7 +117,7 @@
     },
     posters() {
       const list = db.content.filter((x) => x.image && match(x));
-      return `<h1>Posters</h1>${list.length ? `<div class="cards">${list.map((x) => `<div class="card"><a href="${esc(x.image)}" target="_blank" rel="noopener"><img class="pimg" src="${esc(x.image)}" alt="${esc(x.title)}" loading="lazy"></a><p><b>${esc(x.title)}</b></p><p class="muted">${esc(x.caption)}</p><a class="btn small" href="${esc(x.image)}" download>Download</a> ${badge(x.status)}</div>`).join("")}</div>` : `<p class="muted">No posters yet. Ask Claude in chat to create one.</p>`}`;
+      return `<h1>Posters</h1>${list.length ? `<div class="cards">${list.map((x) => `<div class="card"><a href="${esc(x.image)}" target="_blank" rel="noopener"><img class="pimg" src="${esc(x.image)}" alt="${esc(x.title)}" loading="lazy"></a><p><b>${esc(x.title)}</b></p><p class="muted">${esc(x.caption)}</p><button class="btn small" data-prev="${x.id}">Preview</button> <a class="btn small" href="${esc(x.image)}" download>Download</a> ${badge(x.status)}</div>`).join("")}</div>` : `<p class="muted">No posters yet. Ask Claude in chat to create one.</p>`}`;
     },
     analytics() {
       const pub = db.content.filter((x) => x.status === "Published");
@@ -157,8 +157,9 @@
       <label>Caption<textarea name="caption" rows="3">${esc(x.caption)}</textarea></label>
       <label>Notes<textarea name="notes" rows="2">${esc(x.notes)}</textarea></label>
       ${x.status === "Published" ? `<div class="grid2"><label>Views<input type="number" min="0" name="views" value="${(x.stats || {}).views || 0}"></label><label>Likes<input type="number" min="0" name="likes" value="${(x.stats || {}).likes || 0}"></label></div>` : ""}
-      <div class="actions"><button class="btn primary" type="submit">Save</button></div>
+      <div class="actions" style="gap:8px">${item ? `<button class="btn" type="button" id="pvBtn">Preview</button>` : ""}<button class="btn primary" type="submit">Save</button></div>
     </form>`);
+    if (item) $("#pvBtn", m).onclick = () => preview(item);
     $("#cf", m).onsubmit = (e) => {
       e.preventDefault();
       const f = Object.fromEntries(new FormData(e.target));
@@ -170,6 +171,16 @@
     };
   }
 
+  function preview(x) {
+    const tall = ["Reel", "Story", "Video"].includes(x.type);
+    const media = x.image ? `<img src="${esc(x.image)}" alt="${esc(x.title)}">` : `<div class="ph">${esc(x.title)}</div>`;
+    modal(`<h2>Preview</h2><div class="pv pv-${slug(x.platform)}">
+      <div class="pv-h"><i>v</i><div><b>vcreatewebsites</b><small>${esc(x.platform)} · ${esc(x.type)}</small></div></div>
+      <div class="pv-m ${tall ? "tall" : x.image ? "port" : ""}">${media}</div>
+      <p class="pv-c">${esc(x.caption) || '<span class="muted">No caption yet</span>'}</p>
+      <small class="muted">${x.date ? "Goes out " + fmt(x.date) : "Not scheduled"} · ${esc(x.status)}</small></div>
+      <div class="actions" style="margin-top:12px"><button class="btn" data-edit="${x.id}">Edit</button></div>`);
+  }
   function simpleForm(title, fields, onSave) {
     const m = modal(`<h2>${title}</h2><form id="sf" class="form">${fields.map(([n, l, t = "text", opts]) => `<label>${l}${opts ? sel(n, opts, "") : `<input name="${n}" type="${t}" required>`}</label>`).join("")}<div class="actions"><button class="btn primary">Save</button></div></form>`);
     $("#sf", m).onsubmit = (e) => { e.preventDefault(); onSave(Object.fromEntries(new FormData(e.target))); save(); closeModal(); route(); toast("Saved"); };
@@ -200,6 +211,8 @@
     }
   }
   document.addEventListener("click", (e) => {
+    const pv = e.target.closest("[data-prev]");
+    if (pv) { e.preventDefault(); e.stopPropagation(); const it = db.content.find((x) => x.id === pv.dataset.prev); if (it) preview(it); return; }
     const a = e.target.closest("[data-edit]");
     if (a) { e.preventDefault(); const it = db.content.find((x) => x.id === a.dataset.edit); if (it) contentForm(it); }
   });
@@ -214,7 +227,7 @@
   $("#importFile").onchange = async (e) => {
     try { const j = JSON.parse(await e.target.files[0].text()); if (!j.content || !j.campaigns || !j.team) throw 0; db = j; save(); route(); toast("Imported"); } catch { toast("Invalid backup file"); }
   };
-  window.VC = { db: () => db, save, toast, esc, uid };
+  window.VC = { db: () => db, save, toast, esc, uid, preview };
   window.addEventListener("hashchange", route);
   window.addEventListener("load", async () => {
     try {
